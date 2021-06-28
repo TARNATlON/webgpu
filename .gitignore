@@ -91,13 +91,9 @@ typings/
 
 www
 
-package-lock.json
-
 /generated
 
 PATH_TO_DAWN
-
-package-lock.json
 
 examples-dev
 
