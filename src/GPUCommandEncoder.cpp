@@ -5,7 +5,6 @@
 #include "GPURenderPassEncoder.h"
 #include "GPUComputePassEncoder.h"
 
-
 #include "DescriptorDecoder.h"
 
 Napi::FunctionReference GPUCommandEncoder::constructor;
@@ -43,8 +42,6 @@ Napi::Value GPUCommandEncoder::beginComputePass(const Napi::CallbackInfo &info) 
   });
   return computePass;
 }
-
-
 
 Napi::Value GPUCommandEncoder::copyBufferToBuffer(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();

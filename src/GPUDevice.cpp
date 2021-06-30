@@ -12,7 +12,9 @@
 #include "GPURenderPipeline.h"
 #include "GPUCommandEncoder.h"
 #include "GPURenderBundleEncoder.h"
+
 #include "WebGPUWindow.h"
+
 #include "DescriptorDecoder.h"
 
 #include <iostream>
@@ -171,14 +173,11 @@ Napi::Value GPUDevice::createBuffer(const Napi::CallbackInfo& info) {
 }
 
 Napi::Value GPUDevice::createBufferMapped(const Napi::CallbackInfo &info) {
-
   Napi::Env env = info.Env();
-
-   Napi::Object buffer = GPUBuffer::constructor.New({
+  Napi::Object buffer = GPUBuffer::constructor.New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
-
 
   auto descriptor = DescriptorDecoder::GPUBufferDescriptor(this, info[0].As<Napi::Value>());
 
