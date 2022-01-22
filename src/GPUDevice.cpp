@@ -17,8 +17,6 @@
 
 #include "DescriptorDecoder.h"
 
-#include <iostream>
-
 Napi::FunctionReference GPUDevice::constructor;
 
 GPUDevice::GPUDevice(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUDevice>(info) {

@@ -6,7 +6,6 @@
 
 #include <thread>
 #include <chrono>
-#include <iostream>
 
 Napi::FunctionReference GPUFence::constructor;
 
@@ -55,8 +54,7 @@ Napi::Value GPUFence::onCompletion(const Napi::CallbackInfo &info) {
 
   wgpuDeviceTick(backendDevice);
   if (wgpuFenceGetCompletedValue(this->instance) != completionValue) {
-    while (wgpuFenceGetCompletedValue(this->instance) <= completionValue) {
-      std::cout << wgpuFenceGetCompletedValue(this->instance) << " " << completionValue << std::endl;
+    while (wgpuFenceGetCompletedValue(this->instance) != completionValue) {
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
       wgpuDeviceTick(backendDevice);
     };
