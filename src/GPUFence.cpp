@@ -44,6 +44,7 @@ Napi::Value GPUFence::onCompletion(const Napi::CallbackInfo &info) {
     this->instance,
     static_cast<unsigned long long>(completionValue),
     [](WGPUFenceCompletionStatus status, void* userdata) {
+
     },
     nullptr
   );
