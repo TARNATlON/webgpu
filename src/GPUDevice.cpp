@@ -12,6 +12,11 @@
 #include "GPURenderPipeline.h"
 #include "GPUCommandEncoder.h"
 #include "GPURenderBundleEncoder.h"
+#if 0
+#include "GPURayTracingAccelerationContainer.h"
+#include "GPURayTracingShaderBindingTable.h"
+#include "GPURayTracingPipeline.h"
+#endif
 
 #include "WebGPUWindow.h"
 
@@ -160,6 +165,35 @@ Napi::Value GPUDevice::tick(const Napi::CallbackInfo& info) {
   glfwPollEvents();
   return env.Undefined();
 }
+
+#if 0
+Napi::Value GPUDevice::createRayTracingAccelerationContainer(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  Napi::Object accelerationContainer = GPURayTracingAccelerationContainer::constructor.New({
+    info.This().As<Napi::Value>(),
+    info[0].As<Napi::Value>()
+  });
+  return accelerationContainer;
+}
+
+Napi::Value GPUDevice::createRayTracingShaderBindingTable(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  Napi::Object shaderBindingTable = GPURayTracingShaderBindingTable::constructor.New({
+    info.This().As<Napi::Value>(),
+    info[0].As<Napi::Value>()
+  });
+  return shaderBindingTable;
+}
+
+Napi::Value GPUDevice::createRayTracingPipeline(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  Napi::Object rayTracingPipeline = GPURayTracingPipeline::constructor.New({
+    info.This().As<Napi::Value>(),
+    info[0].As<Napi::Value>()
+  });
+  return rayTracingPipeline;
+}
+#endif
 
 Napi::Value GPUDevice::createBuffer(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
@@ -341,6 +375,23 @@ Napi::Object GPUDevice::Initialize(Napi::Env env, Napi::Object exports) {
       &GPUDevice::tick,
       napi_enumerable
     ),
+#if 0
+    InstanceMethod(
+      "createRayTracingAccelerationContainer",
+      &GPUDevice::createRayTracingAccelerationContainer,
+      napi_enumerable
+    ),
+    InstanceMethod(
+      "createRayTracingShaderBindingTable",
+      &GPUDevice::createRayTracingShaderBindingTable,
+      napi_enumerable
+    ),
+    InstanceMethod(
+      "createRayTracingPipeline",
+      &GPUDevice::createRayTracingPipeline,
+      napi_enumerable
+    ),
+#endif
     InstanceMethod(
       "createBuffer",
       &GPUDevice::createBuffer,
