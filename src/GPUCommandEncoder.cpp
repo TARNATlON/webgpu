@@ -223,6 +223,7 @@ Napi::Object GPUCommandEncoder::Initialize(Napi::Env env, Napi::Object exports) 
       &GPUCommandEncoder::beginComputePass,
       napi_enumerable
     ),
+#if 0
     InstanceMethod(
       "beginRayTracingPass",
       &GPUCommandEncoder::beginRayTracingPass,
@@ -243,6 +244,7 @@ Napi::Object GPUCommandEncoder::Initialize(Napi::Env env, Napi::Object exports) 
       &GPUCommandEncoder::updateRayTracingAccelerationContainer,
       napi_enumerable
     ),
+#endif
     InstanceMethod(
       "copyBufferToBuffer",
       &GPUCommandEncoder::copyBufferToBuffer,
