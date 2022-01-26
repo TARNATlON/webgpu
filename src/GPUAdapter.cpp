@@ -27,8 +27,8 @@ GPUAdapter::GPUAdapter(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUAda
 
   this->nativeInstance = std::make_unique<dawn_native::Instance>();
 
-  this->nativeInstance->EnableBackendValidation(true);
-  this->nativeInstance->EnableBeginCaptureOnStartup(true);
+  //this->nativeInstance->EnableBackendValidation(true);
+  //this->nativeInstance->EnableBeginCaptureOnStartup(true);
 
   this->nativeInstance->DiscoverDefaultAdapters();
 
@@ -99,9 +99,9 @@ dawn_native::Adapter GPUAdapter::createAdapter(const Napi::CallbackInfo& info) {
     adapters.begin(),
     adapters.end(),
     [&platform](const dawn_native::Adapter adapter) -> bool {
-      // on windows, prefer vulkan
+      // on windows, prefer d3d12
       if (platform == "win32") {
-        return adapter.GetBackendType() == dawn_native::BackendType::Vulkan;
+        return adapter.GetBackendType() == dawn_native::BackendType::D3D12;
       }
       // on linux, prefer vulkan
       if (platform == "linux") {
