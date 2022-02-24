@@ -27,7 +27,7 @@ jobs:
 
       # linux/macos
       - name: Linux/MacOS - Add tools for dawn
-        if: matrix.os != 'windows-latest'
+        if: matrix.os != 'windows-2019'
         shell: bash
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -48,7 +48,7 @@ jobs:
             libxrandr-dev \
             libxxf86vm-dev \
       - name: Linux/MacOS - Build dawn
-        if: matrix.os != 'windows-latest'
+        if: matrix.os != 'windows-2019'
         shell: bash
         run: |
           # Switch to python2 system environment.
@@ -61,7 +61,7 @@ jobs:
           gn gen out/Shared --target_cpu="x64" --args="is_component_build=true is_debug=false is_clang=true"
           ninja -C out/Shared
       - name: Linux/MacOS - Build webgpu
-        if: matrix.os != 'windows-latest'
+        if: matrix.os != 'windows-2019'
         shell: bash
         run: |
           printf `pwd`/dawn > PATH_TO_DAWN
@@ -71,7 +71,7 @@ jobs:
 
       # windows
       - name: Windows - Add tools for dawn
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         run: |
           Write-Host "get depot_tools"
           (New-Object System.Net.WebClient).DownloadFile("https://storage.googleapis.com/chrome-infra/depot_tools.zip", "$pwd\depot_tools.zip")
@@ -86,7 +86,7 @@ jobs:
           & gclient sync
           & python -m pip install pywin32
       - name: Windows - Build dawn
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         run: |
           $env:Path="${pwd}\depot_tools;$env:Path"
           $env:DEPOT_TOOLS_WIN_TOOLCHAIN=0
@@ -95,7 +95,7 @@ jobs:
           gn gen out/Shared --ide=vs --target_cpu="x64" --args="dawn_enable_vulkan_validation_layers=false is_component_build=true is_debug=false is_clang=false"
           ninja -C out/Shared
       - name: Windows - Build webgpu
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         run: |
           $env:GYP_MSVS_VERSION=2019
           [System.IO.File]::WriteAllText("$pwd/PATH_TO_DAWN", ((Resolve-Path .\dawn).Path -Replace "/$" -Replace "\\", "/"))
@@ -127,7 +127,7 @@ jobs:
       - name: Download windows build
         uses: actions/download-artifact@v1
         with:
-          name: generated-windows-latest
+          name: generated-windows-2019
           path: generated
       - name: Publish to NPM
         uses: primer/publish@v2.0.0
