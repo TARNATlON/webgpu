@@ -1,18 +1,6 @@
 #include "GPU.h"
 #include "GPUAdapter.h"
 
-namespace {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  const char *const platform = "win32";
-#elif defined(__APPLE__)
-  const char *const platform = "darwin";
-#elif defined(__linux__)
-  const char *const platform = "linux";
-#else
-#error Platform not supported.
-#endif
-}
-
 Napi::FunctionReference GPU::constructor;
 
 GPU::GPU(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPU>(info) { }
@@ -25,7 +13,17 @@ Napi::Value GPU::requestAdapter(const Napi::CallbackInfo &info) {
   std::vector<napi_value> args = {};
   if (info[0].IsObject()) args.push_back(info[0].As<Napi::Value>());
   else args.push_back(env.Undefined());
-  args.push_back(Napi::String::New(env, platform));
+  args.push_back(Napi::String::New(env, ""
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    "win32"
+#elif defined(__APPLE__)
+    "darwin"
+#elif defined(__linux__)
+    "linux"
+#else
+#error Platform not supported.
+#endif
+  ));
 
   deferred.Resolve(GPUAdapter::constructor.New(args));
 
