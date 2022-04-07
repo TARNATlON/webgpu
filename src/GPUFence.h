@@ -8,7 +8,7 @@ class GPUFence : public Napi::ObjectWrap<GPUFence> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUFence(const Napi::CallbackInfo &info);
     ~GPUFence();

@@ -9,8 +9,6 @@
 #include <chrono>
 #include <cstdint>
 
-Napi::FunctionReference GPURayTracingAccelerationContainer::constructor;
-
 GPURayTracingAccelerationContainer::GPURayTracingAccelerationContainer(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURayTracingAccelerationContainer>(info) {
   Napi::Env env = info.Env();
 
@@ -57,10 +55,16 @@ Napi::Object GPURayTracingAccelerationContainer::Initialize(Napi::Env env, Napi:
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURayTracingAccelerationContainer", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURayTracingAccelerationContainer::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }
 
 #endif

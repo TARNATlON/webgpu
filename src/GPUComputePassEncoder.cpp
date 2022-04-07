@@ -7,8 +7,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUComputePassEncoder::constructor;
-
 GPUComputePassEncoder::GPUComputePassEncoder(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUComputePassEncoder>(info) {
   Napi::Env env = info.Env();
 
@@ -159,8 +157,14 @@ Napi::Object GPUComputePassEncoder::Initialize(Napi::Env env, Napi::Object expor
       napi_enumerable
     ),
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUComputePassEncoder", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUComputePassEncoder::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

@@ -4,8 +4,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUComputePipeline::constructor;
-
 GPUComputePipeline::GPUComputePipeline(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUComputePipeline>(info) {
   Napi::Env env = info.Env();
 
@@ -27,8 +25,14 @@ Napi::Object GPUComputePipeline::Initialize(Napi::Env env, Napi::Object exports)
   Napi::Function func = DefineClass(env, "GPUComputePipeline", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUComputePipeline", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUComputePipeline::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

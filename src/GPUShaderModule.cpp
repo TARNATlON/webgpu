@@ -5,8 +5,6 @@
 
 #include <shaderc/shaderc.hpp>
 
-Napi::FunctionReference GPUShaderModule::constructor;
-
 GPUShaderModule::GPUShaderModule(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUShaderModule>(info) {
   Napi::Env env = info.Env();
 
@@ -91,8 +89,14 @@ Napi::Object GPUShaderModule::Initialize(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(env, "GPUShaderModule", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUShaderModule", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUShaderModule::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

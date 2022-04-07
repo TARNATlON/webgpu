@@ -8,7 +8,7 @@ class GPUSampler : public Napi::ObjectWrap<GPUSampler> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUSampler(const Napi::CallbackInfo &info);
     ~GPUSampler();

@@ -8,7 +8,7 @@ class GPURenderPipeline : public Napi::ObjectWrap<GPURenderPipeline> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPURenderPipeline(const Napi::CallbackInfo &info);
     ~GPURenderPipeline();

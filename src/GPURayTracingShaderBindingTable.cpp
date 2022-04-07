@@ -9,8 +9,6 @@
 #include <chrono>
 #include <cstdint>
 
-Napi::FunctionReference GPURayTracingShaderBindingTable::constructor;
-
 GPURayTracingShaderBindingTable::GPURayTracingShaderBindingTable(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURayTracingShaderBindingTable>(info) {
   Napi::Env env = info.Env();
 
@@ -41,10 +39,16 @@ Napi::Object GPURayTracingShaderBindingTable::Initialize(Napi::Env env, Napi::Ob
       napi_enumerable
     ),
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURayTracingShaderBindingTable", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURayTracingShaderBindingTable::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }
 
 #endif

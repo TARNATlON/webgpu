@@ -8,7 +8,7 @@ class GPUShaderModule : public Napi::ObjectWrap<GPUShaderModule> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUShaderModule(const Napi::CallbackInfo &info);
     ~GPUShaderModule();

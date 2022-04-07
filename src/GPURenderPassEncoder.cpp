@@ -7,8 +7,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPURenderPassEncoder::constructor;
-
 GPURenderPassEncoder::GPURenderPassEncoder(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURenderPassEncoder>(info) {
   Napi::Env env = info.Env();
 
@@ -324,8 +322,14 @@ Napi::Object GPURenderPassEncoder::Initialize(Napi::Env env, Napi::Object export
       napi_enumerable
     ),
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURenderPassEncoder", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURenderPassEncoder::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

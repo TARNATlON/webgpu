@@ -8,7 +8,7 @@ class GPUBindGroupLayout : public Napi::ObjectWrap<GPUBindGroupLayout> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUBindGroupLayout(const Napi::CallbackInfo &info);
     ~GPUBindGroupLayout();

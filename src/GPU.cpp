@@ -1,8 +1,6 @@
 #include "GPU.h"
 #include "GPUAdapter.h"
 
-Napi::FunctionReference GPU::constructor;
-
 GPU::GPU(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPU>(info) { }
 GPU::~GPU() { }
 
@@ -25,7 +23,7 @@ Napi::Value GPU::requestAdapter(const Napi::CallbackInfo &info) {
 #endif
   ));
 
-  deferred.Resolve(GPUAdapter::constructor.New(args));
+  deferred.Resolve(GPUAdapter::GetConstructor().New(args));
 
   return deferred.Promise();
 }
@@ -39,7 +37,7 @@ Napi::Object GPU::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
-  constructor = Napi::Persistent(func);
+  thread_local Napi::FunctionReference constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPU", func);
   return exports;

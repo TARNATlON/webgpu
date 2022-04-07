@@ -7,8 +7,6 @@
 #include <chrono>
 #include <cstdint>
 
-Napi::FunctionReference GPUBuffer::constructor;
-
 struct BufferCallbackResult {
   void* addr = nullptr;
   uint64_t length = 0;
@@ -192,8 +190,14 @@ Napi::Object GPUBuffer::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUBuffer", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUBuffer::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

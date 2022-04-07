@@ -7,8 +7,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUSwapChain::constructor;
-
 GPUSwapChain::GPUSwapChain(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUSwapChain>(info) {
   Napi::Env env = info.Env();
 
@@ -62,7 +60,7 @@ Napi::Value GPUSwapChain::getCurrentTextureView(const Napi::CallbackInfo &info) 
     info[0].As<Napi::Value>(),
     Napi::Boolean::New(env, true)
   };
-  Napi::Object textureView = GPUTextureView::constructor.New(args);
+  Napi::Object textureView = GPUTextureView::GetConstructor().New(args);
 
   GPUTextureView* uwTexture = Napi::ObjectWrap<GPUTextureView>::Unwrap(textureView);
   uwTexture->instance = nextTextureView;
@@ -92,8 +90,14 @@ Napi::Object GPUSwapChain::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUSwapChain", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUSwapChain::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

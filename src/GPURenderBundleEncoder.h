@@ -8,7 +8,7 @@ class GPURenderBundleEncoder : public Napi::ObjectWrap<GPURenderBundleEncoder> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPURenderBundleEncoder(const Napi::CallbackInfo &info);
     ~GPURenderBundleEncoder();

@@ -4,8 +4,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPURenderPipeline::constructor;
-
 GPURenderPipeline::GPURenderPipeline(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURenderPipeline>(info) {
   Napi::Env env = info.Env();
 
@@ -27,8 +25,14 @@ Napi::Object GPURenderPipeline::Initialize(Napi::Env env, Napi::Object exports) 
   Napi::Function func = DefineClass(env, "GPURenderPipeline", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURenderPipeline", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURenderPipeline::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

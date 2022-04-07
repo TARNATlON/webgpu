@@ -8,7 +8,7 @@ class GPUTextureView : public Napi::ObjectWrap<GPUTextureView> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUTextureView(const Napi::CallbackInfo &info);
     ~GPUTextureView();

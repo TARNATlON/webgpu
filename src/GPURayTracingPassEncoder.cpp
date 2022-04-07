@@ -8,8 +8,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPURayTracingPassEncoder::constructor;
-
 GPURayTracingPassEncoder::GPURayTracingPassEncoder(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURayTracingPassEncoder>(info) {
   Napi::Env env = info.Env();
 
@@ -158,10 +156,16 @@ Napi::Object GPURayTracingPassEncoder::Initialize(Napi::Env env, Napi::Object ex
       napi_enumerable
     ),
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURayTracingPassEncoder", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURayTracingPassEncoder::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }
 
 #endif

@@ -1,7 +1,5 @@
 #include "GPUCommandBuffer.h"
 
-Napi::FunctionReference GPUCommandBuffer::constructor;
-
 GPUCommandBuffer::GPUCommandBuffer(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUCommandBuffer>(info) {
 
 }
@@ -15,8 +13,14 @@ Napi::Object GPUCommandBuffer::Initialize(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(env, "GPUCommandBuffer", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUCommandBuffer", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUCommandBuffer::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

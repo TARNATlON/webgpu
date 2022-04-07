@@ -1,8 +1,6 @@
 #include "WebGPUWindow.h"
 #include "GPUCanvasContext.h"
 
-Napi::FunctionReference WebGPUWindow::constructor;
-
 WebGPUWindow::WebGPUWindow(const Napi::CallbackInfo& info) : Napi::ObjectWrap<WebGPUWindow>(info), env_(info.Env()) {
   Napi::Env env = env_;
   if (info.IsConstructCall()) {
@@ -231,7 +229,7 @@ Napi::Value WebGPUWindow::close(const Napi::CallbackInfo& info) {
 
 Napi::Value WebGPUWindow::getContext(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object canvasContext = GPUCanvasContext::constructor.New({
+  Napi::Object canvasContext = GPUCanvasContext::GetConstructor().New({
     info.This().As<Napi::Value>()
   });
   return canvasContext;
@@ -582,8 +580,14 @@ Napi::Object WebGPUWindow::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("WebGPUWindow", func);
   return exports;
+}
+
+Napi::FunctionReference &WebGPUWindow::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }
