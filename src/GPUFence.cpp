@@ -7,8 +7,6 @@
 #include <thread>
 #include <chrono>
 
-Napi::FunctionReference GPUFence::constructor;
-
 GPUFence::GPUFence(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUFence>(info) {
   Napi::Env env = info.Env();
 
@@ -80,8 +78,14 @@ Napi::Object GPUFence::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUFence", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUFence::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

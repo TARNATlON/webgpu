@@ -8,7 +8,7 @@ class GPURenderBundle : public Napi::ObjectWrap<GPURenderBundle> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPURenderBundle(const Napi::CallbackInfo &info);
     ~GPURenderBundle();

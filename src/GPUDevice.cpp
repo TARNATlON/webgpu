@@ -22,8 +22,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUDevice::constructor;
-
 GPUDevice::GPUDevice(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUDevice>(info) {
   Napi::Env env = info.Env();
 
@@ -125,7 +123,7 @@ BackendBinding* GPUDevice::createBinding(const Napi::CallbackInfo& info, WGPUDev
 
 Napi::Object GPUDevice::createQueue(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  Napi::Object queue = GPUQueue::constructor.New({
+  Napi::Object queue = GPUQueue::GetConstructor().New({
     info.This().As<Napi::Value>()
   });
   return queue;
@@ -169,7 +167,7 @@ Napi::Value GPUDevice::tick(const Napi::CallbackInfo& info) {
 #if 0
 Napi::Value GPUDevice::createRayTracingAccelerationContainer(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  Napi::Object accelerationContainer = GPURayTracingAccelerationContainer::constructor.New({
+  Napi::Object accelerationContainer = GPURayTracingAccelerationContainer::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -178,7 +176,7 @@ Napi::Value GPUDevice::createRayTracingAccelerationContainer(const Napi::Callbac
 
 Napi::Value GPUDevice::createRayTracingShaderBindingTable(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  Napi::Object shaderBindingTable = GPURayTracingShaderBindingTable::constructor.New({
+  Napi::Object shaderBindingTable = GPURayTracingShaderBindingTable::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -187,7 +185,7 @@ Napi::Value GPUDevice::createRayTracingShaderBindingTable(const Napi::CallbackIn
 
 Napi::Value GPUDevice::createRayTracingPipeline(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  Napi::Object rayTracingPipeline = GPURayTracingPipeline::constructor.New({
+  Napi::Object rayTracingPipeline = GPURayTracingPipeline::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -197,7 +195,7 @@ Napi::Value GPUDevice::createRayTracingPipeline(const Napi::CallbackInfo& info) 
 
 Napi::Value GPUDevice::createBuffer(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
-  Napi::Object buffer = GPUBuffer::constructor.New({
+  Napi::Object buffer = GPUBuffer::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -206,7 +204,7 @@ Napi::Value GPUDevice::createBuffer(const Napi::CallbackInfo& info) {
 
 Napi::Value GPUDevice::createBufferMapped(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object buffer = GPUBuffer::constructor.New({
+  Napi::Object buffer = GPUBuffer::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -220,7 +218,7 @@ Napi::Value GPUDevice::createBufferMapped(const Napi::CallbackInfo &info) {
 
 Napi::Value GPUDevice::createBufferMappedAsync(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object buffer = GPUBuffer::constructor.New({
+  Napi::Object buffer = GPUBuffer::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -236,7 +234,7 @@ Napi::Value GPUDevice::createBufferMappedAsync(const Napi::CallbackInfo &info) {
 
 Napi::Value GPUDevice::createTexture(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object texture = GPUTexture::constructor.New({
+  Napi::Object texture = GPUTexture::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -249,7 +247,7 @@ Napi::Value GPUDevice::createSampler(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>()
   };
   if (info[0].IsObject()) args.push_back(info[0].As<Napi::Value>());
-  Napi::Object sampler = GPUSampler::constructor.New(args);
+  Napi::Object sampler = GPUSampler::GetConstructor().New(args);
   return sampler;
 }
 
@@ -259,7 +257,7 @@ Napi::Value GPUDevice::createBindGroupLayout(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object bindGroupLayout = GPUBindGroupLayout::constructor.New(args);
+  Napi::Object bindGroupLayout = GPUBindGroupLayout::GetConstructor().New(args);
   return bindGroupLayout;
 }
 
@@ -269,7 +267,7 @@ Napi::Value GPUDevice::createPipelineLayout(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object pipelineLayout = GPUPipelineLayout::constructor.New(args);
+  Napi::Object pipelineLayout = GPUPipelineLayout::GetConstructor().New(args);
   return pipelineLayout;
 }
 
@@ -279,7 +277,7 @@ Napi::Value GPUDevice::createBindGroup(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object bindGroup = GPUBindGroup::constructor.New(args);
+  Napi::Object bindGroup = GPUBindGroup::GetConstructor().New(args);
   return bindGroup;
 }
 
@@ -289,7 +287,7 @@ Napi::Value GPUDevice::createShaderModule(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object shaderModule = GPUShaderModule::constructor.New(args);
+  Napi::Object shaderModule = GPUShaderModule::GetConstructor().New(args);
   return shaderModule;
 }
 
@@ -299,7 +297,7 @@ Napi::Value GPUDevice::createComputePipeline(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object computePipeline = GPUComputePipeline::constructor.New(args);
+  Napi::Object computePipeline = GPUComputePipeline::GetConstructor().New(args);
   return computePipeline;
 }
 
@@ -309,7 +307,7 @@ Napi::Value GPUDevice::createRenderPipeline(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object renderPipeline = GPURenderPipeline::constructor.New(args);
+  Napi::Object renderPipeline = GPURenderPipeline::GetConstructor().New(args);
   return renderPipeline;
 }
 
@@ -319,7 +317,7 @@ Napi::Value GPUDevice::createCommandEncoder(const Napi::CallbackInfo &info) {
     info.This().As<Napi::Value>()
   };
   args.push_back(Napi::Object::New(env).As<Napi::Value>());
-  Napi::Object commandEncoder = GPUCommandEncoder::constructor.New(args);
+  Napi::Object commandEncoder = GPUCommandEncoder::GetConstructor().New(args);
   return commandEncoder;
 }
 
@@ -329,7 +327,7 @@ Napi::Value GPUDevice::createRenderBundleEncoder(const Napi::CallbackInfo &info)
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   };
-  Napi::Object renderBundleEncoder = GPURenderBundleEncoder::constructor.New(args);
+  Napi::Object renderBundleEncoder = GPURenderBundleEncoder::GetConstructor().New(args);
   return renderBundleEncoder;
 }
 
@@ -458,8 +456,14 @@ Napi::Object GPUDevice::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     ),
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUDevice", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUDevice::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

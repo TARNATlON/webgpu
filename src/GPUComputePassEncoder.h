@@ -8,7 +8,7 @@ class GPUComputePassEncoder : public Napi::ObjectWrap<GPUComputePassEncoder> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUComputePassEncoder(const Napi::CallbackInfo &info);
     ~GPUComputePassEncoder();

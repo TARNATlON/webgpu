@@ -7,8 +7,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUCanvasContext::constructor;
-
 GPUCanvasContext::GPUCanvasContext(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUCanvasContext>(info) {
   this->window.Reset(info[0].As<Napi::Object>(), 1);
 }
@@ -19,7 +17,7 @@ GPUCanvasContext::~GPUCanvasContext() {
 
 Napi::Value GPUCanvasContext::configureSwapChain(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object swapchain = GPUSwapChain::constructor.New({
+  Napi::Object swapchain = GPUSwapChain::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -67,8 +65,14 @@ Napi::Object GPUCanvasContext::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUCanvasContext", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUCanvasContext::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

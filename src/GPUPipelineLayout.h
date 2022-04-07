@@ -8,7 +8,7 @@ class GPUPipelineLayout : public Napi::ObjectWrap<GPUPipelineLayout> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUPipelineLayout(const Napi::CallbackInfo &info);
     ~GPUPipelineLayout();

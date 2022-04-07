@@ -9,7 +9,7 @@ class WebGPUWindow : public Napi::ObjectWrap<WebGPUWindow> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     WebGPUWindow(const Napi::CallbackInfo &info);
     ~WebGPUWindow();

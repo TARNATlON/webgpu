@@ -6,8 +6,6 @@
 
 #include <vector>
 
-Napi::FunctionReference GPUPipelineLayout::constructor;
-
 GPUPipelineLayout::GPUPipelineLayout(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUPipelineLayout>(info) {
   Napi::Env env = info.Env();
 
@@ -29,8 +27,14 @@ Napi::Object GPUPipelineLayout::Initialize(Napi::Env env, Napi::Object exports) 
   Napi::Function func = DefineClass(env, "GPUPipelineLayout", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUPipelineLayout", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUPipelineLayout::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

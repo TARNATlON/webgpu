@@ -3,8 +3,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUSampler::constructor;
-
 GPUSampler::GPUSampler(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUSampler>(info) {
   Napi::Env env = info.Env();
 
@@ -26,8 +24,14 @@ Napi::Object GPUSampler::Initialize(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(env, "GPUSampler", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUSampler", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUSampler::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

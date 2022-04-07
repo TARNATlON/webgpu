@@ -8,7 +8,7 @@ class GPUComputePipeline : public Napi::ObjectWrap<GPUComputePipeline> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUComputePipeline(const Napi::CallbackInfo &info);
     ~GPUComputePipeline();

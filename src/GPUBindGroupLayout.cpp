@@ -3,8 +3,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUBindGroupLayout::constructor;
-
 GPUBindGroupLayout::GPUBindGroupLayout(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUBindGroupLayout>(info) {
   Napi::Env env = info.Env();
 
@@ -26,8 +24,14 @@ Napi::Object GPUBindGroupLayout::Initialize(Napi::Env env, Napi::Object exports)
   Napi::Function func = DefineClass(env, "GPUBindGroupLayout", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUBindGroupLayout", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUBindGroupLayout::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

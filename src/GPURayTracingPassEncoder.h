@@ -10,7 +10,7 @@ class GPURayTracingPassEncoder : public Napi::ObjectWrap<GPURayTracingPassEncode
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPURayTracingPassEncoder(const Napi::CallbackInfo &info);
     ~GPURayTracingPassEncoder();

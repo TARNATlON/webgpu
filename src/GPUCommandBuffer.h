@@ -8,7 +8,7 @@ class GPUCommandBuffer : public Napi::ObjectWrap<GPUCommandBuffer> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUCommandBuffer(const Napi::CallbackInfo &info);
     ~GPUCommandBuffer();

@@ -10,7 +10,7 @@ class GPURayTracingShaderBindingTable : public Napi::ObjectWrap<GPURayTracingSha
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPURayTracingShaderBindingTable(const Napi::CallbackInfo &info);
     ~GPURayTracingShaderBindingTable();

@@ -3,8 +3,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUTextureView::constructor;
-
 GPUTextureView::GPUTextureView(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUTextureView>(info) {
   Napi::Env env = info.Env();
 
@@ -34,8 +32,14 @@ Napi::Object GPUTextureView::Initialize(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(env, "GPUTextureView", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUTextureView", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUTextureView::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

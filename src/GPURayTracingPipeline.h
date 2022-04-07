@@ -10,7 +10,7 @@ class GPURayTracingPipeline : public Napi::ObjectWrap<GPURayTracingPipeline> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPURayTracingPipeline(const Napi::CallbackInfo &info);
     ~GPURayTracingPipeline();

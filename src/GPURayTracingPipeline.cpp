@@ -6,8 +6,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPURayTracingPipeline::constructor;
-
 GPURayTracingPipeline::GPURayTracingPipeline(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURayTracingPipeline>(info) {
   Napi::Env env = info.Env();
 
@@ -29,10 +27,16 @@ Napi::Object GPURayTracingPipeline::Initialize(Napi::Env env, Napi::Object expor
   Napi::Function func = DefineClass(env, "GPURayTracingPipeline", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURayTracingPipeline", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURayTracingPipeline::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }
 
 #endif

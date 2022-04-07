@@ -1,8 +1,6 @@
 #include "GPUAdapter.h"
 #include "WebGPUWindow.h"
 
-Napi::FunctionReference GPUAdapter::constructor;
-
 GPUAdapter::GPUAdapter(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUAdapter>(info) {
   Napi::Env env = info.Env();
 
@@ -52,7 +50,7 @@ Napi::Value GPUAdapter::requestDevice(const Napi::CallbackInfo &info) {
   };
   if (info[0].IsObject()) args.push_back(info[0].As<Napi::Value>());
 
-  Napi::Object device = GPUDevice::constructor.New(args);
+  Napi::Object device = GPUDevice::GetConstructor().New(args);
   deferred.Resolve(device);
 
   return deferred.Promise();
@@ -160,8 +158,15 @@ Napi::Object GPUAdapter::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUAdapter", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUAdapter::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

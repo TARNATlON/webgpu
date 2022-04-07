@@ -9,8 +9,6 @@
 
 #include <vector>
 
-Napi::FunctionReference GPUBindGroup::constructor;
-
 GPUBindGroup::GPUBindGroup(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUBindGroup>(info) {
   Napi::Env env = info.Env();
 
@@ -32,8 +30,14 @@ Napi::Object GPUBindGroup::Initialize(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(env, "GPUBindGroup", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUBindGroup", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUBindGroup::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

@@ -5,8 +5,6 @@
 
 #include <vector>
 
-Napi::FunctionReference GPUQueue::constructor;
-
 GPUQueue::GPUQueue(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUQueue>(info) {
   Napi::Env env = info.Env();
 
@@ -47,7 +45,7 @@ Napi::Value GPUQueue::createFence(const Napi::CallbackInfo &info) {
   if (info[0].IsObject()) {
     args.push_back(info[0].As<Napi::Value>());
   }
-  Napi::Object fence = GPUFence::constructor.New(args);
+  Napi::Object fence = GPUFence::GetConstructor().New(args);
   return fence;
 }
 
@@ -81,8 +79,14 @@ Napi::Object GPUQueue::Initialize(Napi::Env env, Napi::Object exports) {
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUQueue", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUQueue::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

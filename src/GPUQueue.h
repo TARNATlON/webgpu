@@ -8,7 +8,7 @@ class GPUQueue : public Napi::ObjectWrap<GPUQueue> {
   public:
 
     static Napi::Object Initialize(Napi::Env env, Napi::Object exports);
-    static Napi::FunctionReference constructor;
+    static Napi::FunctionReference &GetConstructor();
 
     GPUQueue(const Napi::CallbackInfo &info);
     ~GPUQueue();

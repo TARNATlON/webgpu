@@ -11,8 +11,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPUCommandEncoder::constructor;
-
 GPUCommandEncoder::GPUCommandEncoder(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUCommandEncoder>(info) {
   Napi::Env env = info.Env();
 
@@ -31,7 +29,7 @@ GPUCommandEncoder::~GPUCommandEncoder() {
 
 Napi::Value GPUCommandEncoder::beginRenderPass(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object renderPass = GPURenderPassEncoder::constructor.New({
+  Napi::Object renderPass = GPURenderPassEncoder::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -40,7 +38,7 @@ Napi::Value GPUCommandEncoder::beginRenderPass(const Napi::CallbackInfo &info) {
 
 Napi::Value GPUCommandEncoder::beginComputePass(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object computePass = GPUComputePassEncoder::constructor.New({
+  Napi::Object computePass = GPUComputePassEncoder::GetConstructor().New({
     info.This().As<Napi::Value>(),
     Napi::Object::New(env).As<Napi::Value>()
   });
@@ -51,7 +49,7 @@ Napi::Value GPUCommandEncoder::beginComputePass(const Napi::CallbackInfo &info) 
 #if 0
 Napi::Value GPUCommandEncoder::beginRayTracingPass(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
-  Napi::Object rayTracingPass = GPURayTracingPassEncoder::constructor.New({
+  Napi::Object rayTracingPass = GPURayTracingPassEncoder::GetConstructor().New({
     info.This().As<Napi::Value>(),
     info[0].As<Napi::Value>()
   });
@@ -203,7 +201,7 @@ Napi::Value GPUCommandEncoder::finish(const Napi::CallbackInfo &info) {
 
   WGPUCommandBuffer buffer = wgpuCommandEncoderFinish(this->instance, nullptr);
 
-  Napi::Object commandBuffer = GPUCommandBuffer::constructor.New({});
+  Napi::Object commandBuffer = GPUCommandBuffer::GetConstructor().New({});
   GPUCommandBuffer* uwCommandBuffer = Napi::ObjectWrap<GPUCommandBuffer>::Unwrap(commandBuffer);
   uwCommandBuffer->instance = buffer;
 
@@ -291,8 +289,14 @@ Napi::Object GPUCommandEncoder::Initialize(Napi::Env env, Napi::Object exports) 
       napi_enumerable
     )
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPUCommandEncoder", func);
   return exports;
+}
+
+Napi::FunctionReference &GPUCommandEncoder::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

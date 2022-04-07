@@ -7,8 +7,6 @@
 
 #include "DescriptorDecoder.h"
 
-Napi::FunctionReference GPURenderBundleEncoder::constructor;
-
 GPURenderBundleEncoder::GPURenderBundleEncoder(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURenderBundleEncoder>(info) {
   Napi::Env env = info.Env();
 
@@ -247,8 +245,14 @@ Napi::Object GPURenderBundleEncoder::Initialize(Napi::Env env, Napi::Object expo
       napi_enumerable
     ),
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURenderBundleEncoder", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURenderBundleEncoder::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }

@@ -70,7 +70,7 @@ ${padding}    }`;
     // validate class
     else if (type.isObject) {
       let unwrapType = getExplortDeclarationName(type.nativeType);
-      out += `\n${padding}    if (!(array.Get(ii).IsObject()) || !(array.Get(ii).As<Napi::Object>().InstanceOf(${unwrapType}::constructor.Value()))) {
+      out += `\n${padding}    if (!(array.Get(ii).IsObject()) || !(array.Get(ii).As<Napi::Object>().InstanceOf(${unwrapType}::GetConstructor().Value()))) {
 ${padding}      Napi::String type = Napi::String::New(value.Env(), "Type");
 ${padding}      Napi::String message = Napi::String::New(value.Env(), "Expected '${unwrapType}' for '${structure.externalName}'.'${member.name}'");
 ${padding}      device->throwCallbackError(type, message);
@@ -101,7 +101,7 @@ ${padding}}`;
     // class-based type check
     if (jsType.isObject && type.isObject) {
       let unwrapType = getExplortDeclarationName(type.nativeType);
-      out += `\n${padding}if (!(${input.name}.Get("${member.name}").IsObject()) || !(${input.name}.Get("${member.name}").As<Napi::Object>().InstanceOf(${unwrapType}::constructor.Value()))) {
+      out += `\n${padding}if (!(${input.name}.Get("${member.name}").IsObject()) || !(${input.name}.Get("${member.name}").As<Napi::Object>().InstanceOf(${unwrapType}::GetConstructor().Value()))) {
 ${padding}  Napi::String type = Napi::String::New(value.Env(), "Type");
 ${padding}  Napi::String message = Napi::String::New(value.Env(), "Expected '${unwrapType}' for '${structure.externalName}'.'${member.name}'");
 ${padding}  device->throwCallbackError(type, message);

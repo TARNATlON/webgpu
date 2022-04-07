@@ -1,7 +1,5 @@
 #include "GPURenderBundle.h"
 
-Napi::FunctionReference GPURenderBundle::constructor;
-
 GPURenderBundle::GPURenderBundle(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPURenderBundle>(info) {
 
 }
@@ -15,8 +13,14 @@ Napi::Object GPURenderBundle::Initialize(Napi::Env env, Napi::Object exports) {
   Napi::Function func = DefineClass(env, "GPURenderBundle", {
 
   });
+  auto &constructor = GetConstructor();
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
   exports.Set("GPURenderBundle", func);
   return exports;
+}
+
+Napi::FunctionReference &GPURenderBundle::GetConstructor() {
+  thread_local Napi::FunctionReference constructor;
+  return constructor;
 }
