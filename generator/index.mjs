@@ -34,10 +34,10 @@ const generatePath = `${generateVersionPath}/${getPlatform()}`;
 const generateSrcPath = `${generatePath}/src`;
 const bypassBuild = !!process.env.npm_config_bypass_build;
 
-// enables js interface minifcation
+// enables js interface minification
 const enableMinification = false;
 
-// indicating if it's necessary to include memorylayouts in the build
+// indicating if it's necessary to include memory layouts in the build
 const includeMemoryLayouts = false /*!fs.existsSync(`${generatePath}/memoryLayouts.json`)*/;
 
 function writeGeneratedFile(path, text, includeNotice = true) {
