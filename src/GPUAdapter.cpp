@@ -1,5 +1,4 @@
 #include "GPUAdapter.h"
-#include "WebGPUWindow.h"
 
 GPUAdapter::GPUAdapter(const Napi::CallbackInfo& info) : Napi::ObjectWrap<GPUAdapter>(info) {
   Napi::Env env = info.Env();
