@@ -67,10 +67,11 @@
               "DAWN_NATIVE_SHARED_LIBRARY",
               "DAWN_WIRE_SHARED_LIBRARY",
               "WGPU_SHARED_LIBRARY",
-              "NAPI_CPP_EXCEPTIONS"
+              "NAPI_CPP_EXCEPTIONS",
+              "NODE_ADDON_API_DISABLE_DEPRECATED"
             ],
             "include_dirs": [
-              "<!@(node -p \"require('node-addon-api').include\")",
+              "<(root)/../babylon_native/Dependencies/napi/napi-direct/include/napi",
               "<(dawn)/third_party/vulkan-headers/include",
               "<(root)/lib/include",
               "<(dawn)/src/include",
@@ -114,7 +115,7 @@
               "-lXinerama",
               "-lXcursor",
               "-ldl",
-              "-pthread"  
+              "-pthread"
             ]
           },
           "OS=='win'",
@@ -130,7 +131,7 @@
               "-fno-exceptions"
             ],
             "include_dirs": [
-              "<!@(node -p \"require('node-addon-api').include\")",
+              "<(root)/../babylon_native/Dependencies/napi/napi-direct/include/napi",
               "<(dawn)/third_party/vulkan-headers/include",
               "<(root)/lib/include",
               "<(dawn)/src/include",
@@ -166,7 +167,9 @@
               "WGPU_SHARED_LIBRARY",
               "_GLFW_WIN32",
               "VK_USE_PLATFORM_WIN32_KHR",
-              "NAPI_CPP_EXCEPTIONS"
+              "NAPI_CPP_EXCEPTIONS",
+              "_CRT_SECURE_NO_WARNINGS",
+              "NODE_ADDON_API_DISABLE_DEPRECATED"
             ],
             "msvs_settings": {
               "VCCLCompilerTool": {
@@ -224,10 +227,11 @@
               "DAWN_NATIVE_SHARED_LIBRARY",
               "DAWN_WIRE_SHARED_LIBRARY",
               "WGPU_SHARED_LIBRARY",
-              "NAPI_DISABLE_CPP_EXCEPTIONS"
+              "NAPI_DISABLE_CPP_EXCEPTIONS",
+              "NODE_ADDON_API_DISABLE_DEPRECATED"
             ],
             "include_dirs": [
-              "<!@(node -p \"require('node-addon-api').include\")",
+              "<(root)/../babylon_native/Dependencies/napi/napi-direct/include/napi",
               "<(root)/lib/include",
               "<(dawn)/src/include",
               "<(dawn)/out/Shared/gen",
