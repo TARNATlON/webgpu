@@ -110,6 +110,7 @@ generated/*/*/build/Release/.deps
 generated/*/*/build/Release/obj.target
 
 PATH_TO_DAWN
+PATH_TO_BABYLON_NATIVE
 
 package-lock.json
 

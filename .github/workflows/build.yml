@@ -26,6 +26,13 @@ jobs:
           node-version: '13.x'
 
       # linux/macos
+      - name: Linux/MacOS - Add babylon native
+        if: matrix.os != 'windows-2019'
+        shell: bash
+        run: |
+          git clone https://github.com/Kings-Distributed-Systems/BabylonNative babylon_native
+          cd babylon_native
+          git checkout dcp/develop
       - name: Linux/MacOS - Add tools for dawn
         if: matrix.os != 'windows-2019'
         shell: bash
@@ -65,11 +72,18 @@ jobs:
         shell: bash
         run: |
           printf `pwd`/dawn > PATH_TO_DAWN
+          printf `pwd`/babylon_native > PATH_TO_BABYLON_NATIVE
           npm install
           npm run all --dawnversion=0.0.1
           ls -l generated/0.0.1/*/build/Release
 
       # windows
+      - name: Windows - Add babylon native
+        if: matrix.os == 'windows-2019'
+        run: |
+          git clone https://github.com/Kings-Distributed-Systems/BabylonNative babylon_native
+          cd babylon_native
+          git checkout dcp/develop
       - name: Windows - Add tools for dawn
         if: matrix.os == 'windows-2019'
         run: |
@@ -100,6 +114,8 @@ jobs:
           $env:GYP_MSVS_VERSION=2019
           [System.IO.File]::WriteAllText("$pwd/PATH_TO_DAWN", ((Resolve-Path .\dawn).Path -Replace "/$" -Replace "\\", "/"))
           cat PATH_TO_DAWN
+          [System.IO.File]::WriteAllText("$pwd/PATH_TO_BABYLON_NATIVE", ((Resolve-Path .\babylon_native).Path -Replace "/$" -Replace "\\", "/"))
+          cat PATH_TO_BABYLON_NATIVE
           npm install
           npm run all --dawnversion=0.0.1
           ls generated/0.0.1/*/build/Release
