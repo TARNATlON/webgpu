@@ -94,6 +94,7 @@ www
 /generated
 
 PATH_TO_DAWN
+PATH_TO_BABYLON_NATIVE
 
 examples-dev
 

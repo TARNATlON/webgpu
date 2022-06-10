@@ -5,6 +5,7 @@
     "build": "<@(module_root_dir)/build",
     "release": "<(build)/Release",
     "dawn": "{{ DAWN_PATH | safe }}",
+    "babylon_native": "{{ BABYLON_NATIVE_PATH | safe }}"
   },
   "conditions": [
     [ "platform == 'win'",   { "variables": { "platform": "win" } } ],
