@@ -17,6 +17,8 @@ class GPUCanvasContext : public Napi::ObjectWrap<GPUCanvasContext> {
     Napi::Value getSwapChainPreferredFormat(const Napi::CallbackInfo &info);
 
     Napi::ObjectReference window;
+
+    WGPUSwapChain instance = nullptr;
 };
 
 #endif
