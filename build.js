@@ -95,6 +95,16 @@ function copyFiles() {
         files.push([`${dawnOutputDir}/libshaderc.dll.lib`, targetDir + "/../"]);
         files.push([`${dawnOutputDir}/libshaderc_spvc.dll.lib`, targetDir + "/../"]);
       }
+      // dawn pdbs
+      {
+        //files.push([`${dawnOutputDir}/libc++.dll.pdb`, targetDir + "/../"]);
+        //files.push([`${dawnOutputDir}/libdawn.dll.pdb`, targetDir + "/../"]);
+        files.push([`${dawnOutputDir}/dawn_native.dll.pdb`, targetDir + "/../"]);
+        files.push([`${dawnOutputDir}/dawn_proc.dll.pdb`, targetDir + "/../"]);
+        files.push([`${dawnOutputDir}/dawn_wire.dll.pdb`, targetDir + "/../"]);
+        files.push([`${dawnOutputDir}/libshaderc.dll.pdb`, targetDir + "/../"]);
+        files.push([`${dawnOutputDir}/libshaderc_spvc.dll.pdb`, targetDir + "/../"]);
+      }
     }
     // add darwin runtime files
     else if (platform === "darwin") {
