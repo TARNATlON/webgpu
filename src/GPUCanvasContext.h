@@ -18,6 +18,7 @@ class GPUCanvasContext : public Napi::ObjectWrap<GPUCanvasContext> {
 
     Napi::ObjectReference window;
 
+    WGPUSwapChainDescriptor descriptor{};
     WGPUSwapChain instance = nullptr;
 };
 

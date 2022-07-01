@@ -12,8 +12,10 @@ GPUCanvasContext::GPUCanvasContext(const Napi::CallbackInfo& info) : Napi::Objec
 }
 
 GPUCanvasContext::~GPUCanvasContext() {
+  if (this->instance) {
+    wgpuSwapChainRelease(this->instance);
+  }
   this->window.Reset();
-  wgpuSwapChainRelease(this->instance);
 }
 
 Napi::Value GPUCanvasContext::configureSwapChain(const Napi::CallbackInfo &info) {
@@ -35,12 +37,13 @@ Napi::Value GPUCanvasContext::getSwapChainPreferredFormat(const Napi::CallbackIn
   WebGPUWindow* window = Napi::ObjectWrap<WebGPUWindow>::Unwrap(adapter->window.Value());
 
   if (window->preferredSwapChainFormat == WGPUTextureFormat_Undefined) {
-    WGPUSwapChainDescriptor descriptor;
-    descriptor.nextInChain = nullptr;
-    descriptor.implementation = device->binding->GetSwapChainImplementation();
-    if (this->instance == nullptr) {
-      this->instance = wgpuDeviceCreateSwapChain(device->instance, nullptr, &descriptor);
+    this->descriptor.nextInChain = nullptr;
+    this->descriptor.implementation = device->binding->GetSwapChainImplementation();
+    if (this->instance) {
+      wgpuSwapChainRelease(this->instance);
     }
+    this->instance = wgpuDeviceCreateSwapChain(device->instance, nullptr, &this->descriptor);
+    wgpuSwapChainReference(this->instance);
     glfwPollEvents();
     window->preferredSwapChainFormat = device->binding->GetPreferredSwapChainTextureFormat();
   }
