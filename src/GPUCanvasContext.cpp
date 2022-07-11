@@ -36,6 +36,7 @@ Napi::Value GPUCanvasContext::getSwapChainPreferredFormat(const Napi::CallbackIn
   if (window->preferredSwapChainFormat == WGPUTextureFormat_Undefined) {
     WGPUSwapChainDescriptor descriptor{};
     descriptor.nextInChain = nullptr;
+    // returns always the same address, so we dont have to release this temp swapchain?
     descriptor.implementation = device->binding->GetSwapChainImplementation();
     WGPUSwapChain instance = wgpuDeviceCreateSwapChain(device->instance, nullptr, &descriptor);
     glfwPollEvents();
