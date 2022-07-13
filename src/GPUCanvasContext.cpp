@@ -38,6 +38,7 @@ Napi::Value GPUCanvasContext::getSwapChainPreferredFormat(const Napi::CallbackIn
     descriptor.nextInChain = nullptr;
     // returns always the same address, so we dont have to release this temp swapchain?
     descriptor.implementation = device->binding->GetSwapChainImplementation();
+    // this flags an lsan leak, but releasing it causes a double-delete on Windows
     WGPUSwapChain instance = wgpuDeviceCreateSwapChain(device->instance, nullptr, &descriptor);
     glfwPollEvents();
     window->preferredSwapChainFormat = device->binding->GetPreferredSwapChainTextureFormat();
