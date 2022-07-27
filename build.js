@@ -189,6 +189,6 @@ function actionsAfter() {
   if (buildSuccess) {
     process.stdout.write(`\nSuccessfully compiled bindings for ${dawnVersion}!\n`);
   } else {
-    process.stderr.write(`\nFailed to compile bindings for ${dawnVersion}!`);
+    process.stderr.write(`\nFailed to compile bindings for ${dawnVersion}!\n`);
   }
 })();
