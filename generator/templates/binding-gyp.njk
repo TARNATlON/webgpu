@@ -228,7 +228,7 @@
               "DAWN_NATIVE_SHARED_LIBRARY",
               "DAWN_WIRE_SHARED_LIBRARY",
               "WGPU_SHARED_LIBRARY",
-              "NAPI_DISABLE_CPP_EXCEPTIONS",
+              "NAPI_CPP_EXCEPTIONS",
               "NODE_ADDON_API_DISABLE_DEPRECATED"
             ],
             "include_dirs": [
@@ -253,7 +253,8 @@
             "xcode_settings": {
               "OTHER_CPLUSPLUSFLAGS": [
                 "-std=c++14",
-                "-stdlib=libc++"
+                "-stdlib=libc++",
+                "-fexceptions"
               ],
               "OTHER_LDFLAGS": [
                 "-Wl,-rpath,@loader_path",
