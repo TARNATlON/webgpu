@@ -32,14 +32,14 @@ jobs:
         run: |
           git clone https://github.com/Kings-Distributed-Systems/node node
           cd node
-          git checkout dcp/tickets/DCP-2955
+          git checkout dcp/release
       - name: Linux/MacOS - Add node-addon-api
         if: matrix.os != 'windows-2019'
         shell: bash
         run: |
           git clone https://github.com/Kings-Distributed-Systems/node-addon-api node_addon_api
           cd node_addon_api
-          git checkout dcp/tickets/DCP-2955
+          git checkout dcp/release
       - name: Linux/MacOS - Add tools for dawn
         if: matrix.os != 'windows-2019'
         shell: bash
@@ -91,13 +91,13 @@ jobs:
         run: |
           git clone https://github.com/Kings-Distributed-Systems/node node
           cd node
-          git checkout dcp/tickets/DCP-2955
+          git checkout dcp/release
       - name: Windows - Add node-addon-api
         if: matrix.os == 'windows-2019'
         run: |
           git clone https://github.com/Kings-Distributed-Systems/node-addon-api node_addon_api
           cd node_addon_api
-          git checkout dcp/tickets/DCP-2955
+          git checkout dcp/release
       - name: Windows - Add tools for dawn
         if: matrix.os == 'windows-2019'
         run: |
