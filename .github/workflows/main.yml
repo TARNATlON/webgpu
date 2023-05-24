@@ -8,6 +8,7 @@ jobs:
       matrix:
         os:
           - windows-2019
+          - ubuntu-latest
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
@@ -17,24 +18,84 @@ jobs:
       - name: Checkout dawn
         uses: actions/checkout@v2
         with:
-          repository: TARNATlON/dawn
+          repository: Distributive-Network/dawn
           ref: dcp/release
           path: dawn
       - uses: actions/setup-node@v2
         with:
           node-version: '13.x'
-          
+
+      # linux/macos
+      - name: Linux/MacOS - Add node-api
+        if: matrix.os != 'windows-2019'
+        shell: bash
+        run: |
+          git clone https://github.com/Distributive-Network/node node
+          cd node
+          git checkout dcp/release
+      - name: Linux/MacOS - Add node-addon-api
+        if: matrix.os != 'windows-2019'
+        shell: bash
+        run: |
+          git clone https://github.com/Distributive-Network/node-addon-api node_addon_api
+          cd node_addon_api
+          git checkout dcp/release
+      - name: Linux/MacOS - Add tools for dawn
+        if: matrix.os != 'windows-2019'
+        shell: bash
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          export PATH=`pwd`/depot_tools:$PATH
+          cd dawn
+          cp scripts/standalone.gclient .gclient
+          gclient sync
+      - name: Linux - Install tools and libs from apt
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get install -y \
+            clang \
+            libosmesa6-dev \
+            libvulkan-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libxinerama-dev \
+            libxrandr-dev \
+            libxxf86vm-dev \
+      - name: Linux/MacOS - Build dawn
+        if: matrix.os != 'windows-2019'
+        shell: bash
+        run: |
+          # Switch to python2 system environment.
+          # From: https://github.com/Jguer/yay/issues/1257
+          mkdir -p bin
+          ln -sf /usr/bin/python2 ./bin/python
+          ln -sf /usr/bin/python2-config ./bin/python-config
+          export PATH=`pwd`/bin:`pwd`/depot_tools:$PATH
+          cd dawn
+          gn gen out/Shared --target_cpu="x64" --args="is_component_build=true is_debug=false is_clang=true"
+          ninja -C out/Shared
+      - name: Linux/MacOS - Build webgpu
+        if: matrix.os != 'windows-2019'
+        shell: bash
+        run: |
+          printf `pwd`/dawn > PATH_TO_DAWN
+          printf `pwd`/node > PATH_TO_NODE_API
+          printf `pwd`/node_addon_api > PATH_TO_NODE_ADDON_API
+          npm install
+          npm run all --dawnversion=0.0.1
+          ls -l generated/0.0.1/*/build/Release
+
       # windows
       - name: Windows - Add node-api
         if: matrix.os == 'windows-2019'
         run: |
-          git clone https://github.com/Kings-Distributed-Systems/node node
+          git clone https://github.com/Distributive-Network/node node
           cd node
           git checkout dcp/release
       - name: Windows - Add node-addon-api
         if: matrix.os == 'windows-2019'
         run: |
-          git clone https://github.com/Kings-Distributed-Systems/node-addon-api node_addon_api
+          git clone https://github.com/Distributive-Network/node-addon-api node_addon_api
           cd node_addon_api
           git checkout dcp/release
       - name: Windows - Add tools for dawn
@@ -74,6 +135,7 @@ jobs:
           npm install
           npm run all --dawnversion=0.0.1
           ls generated/0.0.1/*/build/Release
+
       # upload
       - name: Upload build
         uses: actions/upload-artifact@v1
